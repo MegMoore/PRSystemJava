@@ -1,5 +1,7 @@
 package com.prsystemjava.spring.product;
 
-public interface ProductRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface ProductRepository extends CrudRepository<Product, Integer>{
 
 }

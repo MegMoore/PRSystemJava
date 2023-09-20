@@ -1,5 +1,7 @@
 package com.prsystemjava.spring.requestline;
 
-public interface RequestlineRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface RequestlineRepository extends CrudRepository<RequestLine, Integer>{
 
 }
