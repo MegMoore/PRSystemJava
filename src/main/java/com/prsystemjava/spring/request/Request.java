@@ -3,6 +3,7 @@ package com.prsystemjava.spring.request;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.prsystemjava.spring.requestline.RequestLine;
 import com.prsystemjava.spring.user.User;
 import com.prsystemjava.spring.vendor.Vendor;
@@ -41,7 +42,7 @@ public class Request {
 	@JoinColumn(name="userId")
 	private User user;
 	
-	@JsonBackReference
+	@JsonManagedReference
 	@OneToMany(mappedBy="request")
 	private List<RequestLine> requestlines;
 

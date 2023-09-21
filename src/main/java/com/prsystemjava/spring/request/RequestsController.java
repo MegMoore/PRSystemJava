@@ -56,12 +56,15 @@ public class RequestsController {
 		}
 		
 		//PutReview
-		@PutMapping("review/{review}")
-		public ResponseEntity<?> putReview(@PathVariable String status) {
-			@SuppressWarnings("unused")
-			String setStatus = "REVIEW";
-			return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
-		}
+		//@SuppressWarnings("rawtypes")
+		//@PutMapping("review")
+		//public ResponseEntity putReview(@RequestBody Request req) {
+			//if(Request.total <= 50) {
+				//return new ResponseEntity<setStatus> = "APPROVED";
+			//}
+			//String setStatus = "REVIEW";
+			//return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+		//}
 		
 		//Put
 		@PutMapping("{id}")

@@ -1,5 +1,6 @@
 package com.prsystemjava.spring.requestline;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.prsystemjava.spring.product.Product;
 import com.prsystemjava.spring.request.Request;
@@ -20,7 +21,7 @@ public class RequestLine {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id = 0;
 	
-	@JsonManagedReference
+	@JsonBackReference
 	@ManyToOne(optional=false)
 	private Request request;
 	
