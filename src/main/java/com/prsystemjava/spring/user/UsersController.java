@@ -43,7 +43,7 @@ public class UsersController {
 		return new ResponseEntity<User>(use.get(), HttpStatus.OK);
 	}
 	
-	//Get By Code
+	//Get By username and password
 	@GetMapping("{username}/{password}")//get customer by username and password
 	public ResponseEntity<User> getUserByUsernameAndPassword(@PathVariable String username, @PathVariable String password){
 		Optional<User> use = useRepo.findUserByUsernameAndPassword(username, password);

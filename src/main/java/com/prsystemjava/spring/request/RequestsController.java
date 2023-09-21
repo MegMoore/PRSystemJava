@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prsystemjava.spring.user.User;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/requests")
@@ -29,6 +31,19 @@ public class RequestsController {
 		Iterable<Request> reqs= reqRepo.findAll();
 		return new ResponseEntity<Iterable<Request>>(reqs, HttpStatus.OK);
 	}
+	
+	//Get By Review
+	@GetMapping("review/{userId}")
+	public ResponseEntity<Iterable<Request>> getReview(@PathVariable int userId){
+		Iterable<Request> reqs = reqRepo.findByStatusAndUserIdNot("REVIEW", userId);
+		
+		return new ResponseEntity<Iterable<Request>>(reqs, HttpStatus.OK);
+	}
+	
+		
+		
+	
+	
 	//Get By Id
 	@GetMapping("{id}")//get by id
 	public ResponseEntity<Request> getRequest(@PathVariable int id){
@@ -56,15 +71,40 @@ public class RequestsController {
 		}
 		
 		//PutReview
-		//@SuppressWarnings("rawtypes")
-		//@PutMapping("review")
-		//public ResponseEntity putReview(@RequestBody Request req) {
-			//if(Request.total <= 50) {
-				//return new ResponseEntity<setStatus> = "APPROVED";
-			//}
-			//String setStatus = "REVIEW";
-			//return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
-		//}
+		
+		@PutMapping("review/{id}")
+		
+			public ResponseEntity<?> putReview(@RequestBody Request req, @PathVariable int id) {
+		        
+		        	
+		        		if(req.getTotal() >= 50) {
+		        		req.setStatus("REVIEW");
+		        		}
+		        		
+		        		if(req.getTotal() < 50) {
+			        	req.setStatus("APPROVED");
+		        		}
+		        return putRequest(id, req);		
+		}
+				       
+		//PutApproved
+		@PutMapping("approved/{id}")
+		public ResponseEntity<?> putApproved(@RequestBody Request req, @PathVariable int id) {
+	        
+			req.setStatus("APPROVED");
+        		
+        return putRequest(id, req);		
+}
+				
+		//PutRejected
+				@PutMapping("rejected/{id}")
+				public ResponseEntity<?> putRejected(@RequestBody Request req, @PathVariable int id) {
+			        
+					req.setStatus("REJECTED");
+		        		
+		        return putRequest(id, req);		
+		}
+		
 		
 		//Put
 		@PutMapping("{id}")
