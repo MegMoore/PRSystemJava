@@ -76,11 +76,11 @@ public class RequestsController {
 			public ResponseEntity<?> putReview(@RequestBody Request req, @PathVariable int id) {
 		        
 		        	
-		        		if(req.getTotal() >= 50) {
+		        		if(req.getTotal() < 50) {
 		        		req.setStatus("REVIEW");
 		        		}
 		        		
-		        		if(req.getTotal() < 50) {
+		        		if(req.getTotal() >= 50) {
 			        	req.setStatus("APPROVED");
 		        		}
 		        return putRequest(id, req);		
