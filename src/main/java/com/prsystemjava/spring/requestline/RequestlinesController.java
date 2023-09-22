@@ -3,6 +3,7 @@ package com.prsystemjava.spring.requestline;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Streamable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.prsystemjava.spring.request.RequestsRepository;
+import com.prsystemjava.spring.request.Request;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/requestlines")
@@ -22,6 +26,8 @@ public class RequestlinesController {
 
 	@Autowired
 	private RequestlineRepository reqlRepo;
+	@Autowired
+	private RequestsRepository reqRepo;
 	
 	//Get All
 	@GetMapping
@@ -47,37 +53,55 @@ public class RequestlinesController {
 	
 	//Post
 		@PostMapping
-		public ResponseEntity<RequestLine> postRequestLine(@RequestBody RequestLine reql){
+		public ResponseEntity<RequestLine> postRequestLine(@RequestBody RequestLine reql) throws Exception {
 			if(reql.getId() != 0) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}
 			reqlRepo.save(reql);
+			recalculateRequestTotal(reql.getRequest().getId());
 			return new ResponseEntity<RequestLine>(reql, HttpStatus.CREATED);
 		}
 		
 		//Put
 		@PutMapping("{id}")
-		public ResponseEntity putRequestLine(@PathVariable int id, @RequestBody RequestLine reql) {
+		public ResponseEntity putRequestLine(@PathVariable int id, @RequestBody RequestLine reql) throws Exception {
 			if(reql.getId() != id) {
 				return new ResponseEntity(HttpStatus.BAD_REQUEST);
 			}
 			reqlRepo.save(reql);
+			recalculateRequestTotal(reql.getRequest().getId());
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		
 		//Delete
 		@DeleteMapping("{id}")
-		public ResponseEntity deleteRequestLine(@PathVariable int id) {
+		public ResponseEntity deleteRequestLine(@PathVariable int id) throws Exception  {
 			if(id <= 0) {
 				return new ResponseEntity(HttpStatus.BAD_REQUEST);
 			}
+			Optional<RequestLine> reql = reqlRepo.findById(id);
 			reqlRepo.deleteById(id);
+			recalculateRequestTotal(reql.get().getRequest().getId());
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		
-		
-		
-		
+		//Automatically updates when added to other method's code
+		private void recalculateRequestTotal(int requestId) throws Exception /* must add after putting in exception*/ {
+			
+			Optional<Request> req = reqRepo.findById(requestId);//optional will return non or one
+			if(req.isEmpty()) {									//had to call Request class not Product class
+				throw new Exception("Did not find");
+			}
+			Iterable<RequestLine> reqls = reqlRepo.findAllByRequestId(requestId);//iterable is a collection
+			double total = 0;		//added variable to calculate 
+			for(RequestLine rl: reqls) { //called RequestLive class(renamed rl) and reql from previous lines
+				total =+ rl.getQuantity() * rl.getProduct().getPrice(); //attained by calling methods from Request class
+			}
+			req.get().setTotal(total); //setting new balance/total
+			reqRepo.save(req.get());//saving updates
+			
+			return;
+		}
 		
 		
 		
