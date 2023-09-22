@@ -75,13 +75,14 @@ public class RequestlinesController {
 		
 		//Delete
 		@DeleteMapping("{id}")
-		public ResponseEntity deleteRequestLine(@PathVariable int id) throws Exception  {
+		public ResponseEntity deleteRequestLine(@PathVariable int id) throws Exception/*had to add because of the 
+		recalculateRequestTotal() method that has exceptions in it*/ {
 			if(id <= 0) {
 				return new ResponseEntity(HttpStatus.BAD_REQUEST);
 			}
-			Optional<RequestLine> reql = reqlRepo.findById(id);
+			Optional<RequestLine> reql = reqlRepo.findById(id);//had to add so we could find the id
 			reqlRepo.deleteById(id);
-			recalculateRequestTotal(reql.get().getRequest().getId());
+			recalculateRequestTotal(reql.get().getRequest().getId());//called private method to update automatically
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}
 		

@@ -30,7 +30,7 @@ public class User {
 	@Column(columnDefinition = "boolean", nullable=false)
 	private boolean isReviewer = false;
 	@Column(columnDefinition = "boolean", nullable=false)
-	private boolean inAdmin = false;
+	private boolean isAdmin = false;
 	
 	//getters and setters
 	public int getId() {
@@ -81,11 +81,11 @@ public class User {
 	private void setReviewer(boolean isReviewer) {
 		this.isReviewer = isReviewer;
 	}
-	public boolean isInAdmin() {
-		return inAdmin;
+	public boolean isIsAdmin() {
+		return isAdmin;
 	}
-	private void setInAdmin(boolean inAdmin) {
-		this.inAdmin = inAdmin;
+	private void setInAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
 	
 	

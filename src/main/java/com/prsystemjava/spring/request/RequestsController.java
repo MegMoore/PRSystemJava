@@ -87,7 +87,7 @@ public class RequestsController {
 		}
 				       
 		//PutApproved
-		@PutMapping("approved/{id}")
+		@PutMapping("approve/{id}")
 		public ResponseEntity<?> putApproved(@RequestBody Request req, @PathVariable int id) {
 	        
 			req.setStatus("APPROVED");
@@ -96,7 +96,7 @@ public class RequestsController {
 }
 				
 		//PutRejected
-				@PutMapping("rejected/{id}")
+				@PutMapping("reject/{id}")
 				public ResponseEntity<?> putRejected(@RequestBody Request req, @PathVariable int id) {
 			        
 					req.setStatus("REJECTED");

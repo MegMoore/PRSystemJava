@@ -19,7 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="request")
+@Table(name="requests")
 public class Request {
 
 	@Id

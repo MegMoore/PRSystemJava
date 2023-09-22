@@ -23,6 +23,7 @@ public class RequestLine {
 	
 	@JsonBackReference
 	@ManyToOne(optional=false)
+	@JoinColumn(name="requestId")
 	private Request request;
 	
 	@ManyToOne(optional=false)
